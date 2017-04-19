@@ -25,18 +25,23 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/',
 function(req, res) {
-  res.render('index');
+  res.render('login');
 });
+
+// app.get('/redirect',
+// function(req, res) {
+//   res.render('index');
+// });
 
 app.get('/create',
 function(req, res) {
   res.render('index');
 });
 
-app.get('/login',
-function(req, res) {
-  res.render('login');
-});
+// app.get('/login',
+// function(req, res) {
+//   res.render('login');
+// });
 
 app.get('/signup',
 function(req, res) {
@@ -95,39 +100,27 @@ function(req, res) {
     qb.where('username', '=', username).andWhere('password', '=', password);
   }).fetch().then(function(output) {
     if (output) {
-      res.redirect('/');
+      res.redirect('/create');
     } else {
-      res.status(200).send('Not a valid login');
+      res.status(400).send('Not a valid login');
     }
   });
 });
 
 app.post('/signup',
 function(req, res) {
-// console.log(req.body);
   var username = req.body.username;
   var password = req.body.password;
-
-  // if (!util.isValidUrl(uri)) {
-  //   console.log('Not a valid url: ', uri);
-  //   return res.sendStatus(404);
-  // }
 
   new User({ username: username }).fetch().then(function(found) {
     if (found) {
       res.status(400).send('username already in use');
     } else {
-      // util.getUrlTitle(uri, function(err, title) {
-        // if (err) {
-        //   console.log('Error reading URL heading: ', err);
-        //   return res.sendStatus(404);
-        // }
-
       Users.create({
         username: username,
         password: password
-     
       }).then(function(newUser) {
+        console.log(newUser);
       res.redirect('/login');
       });
     }

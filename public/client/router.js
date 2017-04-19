@@ -4,10 +4,11 @@ Shortly.Router = Backbone.Router.extend({
   },
 
   routes: {
+    //'': 'login',
     '': 'index',
-    'create': 'create',
+    'create': 'create'
     //will need a login route
-    'logIn': 'logIn'
+    //'redirect': 'index'
   },
 
   swapView: function(view) {
@@ -24,7 +25,9 @@ Shortly.Router = Backbone.Router.extend({
     this.swapView(new Shortly.createLinkView());
   },
 
-  logIn: function() {
-//method to handle login route
-  }
+  redirect: function() {
+    var links = new Shortly.Links();
+    var linksView = new Shortly.LinksView({ collection: links });
+    this.swapView(linksView);
+  },
 });
